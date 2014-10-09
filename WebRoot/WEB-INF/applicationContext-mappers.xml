@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--	使用spring-beans-3.0.xsd语义约束，若使用dtd语义约束则不支持新增标签	-->
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-3.0.xsd
+http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+	<!-- Data source configuration -->
+	<bean id="dataSource"
+		class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<!-- Mysql dirver -->
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<!-- Mysql connection url -->
+		<property name="jdbcUrl"
+			value="jdbc:mysql://127.0.0.1:3306/szuassistent" />
+		<!-- Database login user -->
+		<property name="user" value="root" />
+		<!-- Database login password -->
+		<property name="password" value="2426" />
+		<!-- Maximal pool size -->
+		<property name="maxPoolSize" value="40" />
+		<!-- Mininum pool size -->
+		<property name="minPoolSize" value="5" />
+		<!-- Initial pool size -->
+		<property name="initialPoolSize" value="5" />
+		<!-- Maximum connection free time -->
+		<property name="maxIdleTime" value="20" />
+	</bean>
+
+	<!-- Sql session factory configuration -->
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- Data source -->
+		<property name="dataSource" ref="dataSource" />
+		<!-- MyBatis configuration location -->
+		<property name="configLocation"
+			value="/WEB-INF/mybatis-config.xml" />
+		<!-- Mapper configuration location -->
+		<property name="mapperLocations"
+			value="classpath*:org/wechatapps/pojo/mapper/*.xml" />
+	</bean>
+
+	<!-- Start: Mapper beans -->
+	<bean id="mapper" p:sqlSessionFactory-ref="sqlSessionFactory"
+		abstract="true" />
+	<bean id="historyMapper"
+		class="org.mybatis.spring.mapper.MapperFactoryBean"
+		p:mapperInterface="org.wechatapps.pojo.mapper.HistoryMapper"
+		parent="mapper" />
+	<!-- End: Mapper beans -->
+
+</beans>

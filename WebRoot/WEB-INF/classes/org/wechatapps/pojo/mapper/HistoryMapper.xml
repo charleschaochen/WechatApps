@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wechatapps.pojo.mapper.HistoryMapper">
+	<resultMap id="histResultMap" type="History">
+		<id property="historyId" column="history_id" />
+		<result property="historyUserId" column="history_user_id" />
+		<result property="historyEventKey" column="history_event_key" />
+		<result property="historyTime" column="history_time" />
+	</resultMap>
+	<insert id="add" parameterType="History" useGeneratedKeys="true"
+		keyProperty="historyId">
+		insert into history(history_user_id, history_event_key)
+		values(#{historyUserId}, #{historyEventKey})
+	</insert>
+	<delete id="delete" parameterType="int">
+		delete from history where history_id = #{history_id}
+	</delete>
+	<update id="update" parameterType="History">
+		update history set history_user_id = #{historyUserId},
+		history_event_key = #{historyEventKey}
+	</update>
+	<select id="getAllHistories" resultMap="histResultMap">
+		select history_id, history_user_id, history_event_key,
+		history_time from history
+	</select>
+	<select id="getHistoryById" parameterType="int"
+		resultMap="histResultMap">
+		select history_id, history_user_id, history_event_key,
+		history_time from history where history_id = #{historyId} order
+		by history_time desc
+	</select>
+	<select id="getHistoryByKey" parameterType="String"
+		resultMap="histResultMap">
+		select history_id, history_user_id, history_event_key,
+		history_time from history where history_event_key = #{key} order
+		by history_time desc
+	</select>
+	<select id="getHistoryByUserId" parameterType="String"
+		resultMap="histResultMap">
+		select history_id, history_user_id, history_event_key,
+		history_time from history where history_user_id = #{userId}
+		order by history_time desc
+	</select>
+	<select id="getNonTimeoutByUserId" resultMap="histResultMap" parameterType="map">
+		<![CDATA[
+		select history_id, history_user_id, history_event_key,
+		history_time from history where history_user_id = #{userId} and
+		(UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(history_time))
+		<= #{seconds} order by history_time desc 
+		]]>
+	</select>
+
+</mapper>

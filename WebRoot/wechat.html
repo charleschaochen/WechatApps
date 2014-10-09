@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+	<head lang="zh-cn">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="/css/bootstrap-v3/bootstrap.min.css">
+		<link rel="stylesheet" href="/css/wechat.css" />
+		<script src="/js/jquery-1.9.1.js"></script>
+		<script src="/js/bootstrap-v3/bootstrap.min.js"></script>
+		<script src="/js/wechat.js"></script>
+		<script>
+        window.onload = function () {
+            Wechat.initWechatDialog("QQ音乐", {
+                "button": [
+                    {
+                        "type": "click",
+                        "name": "今日歌曲",
+                        "key": "ADD"
+                    },
+                    {
+                        "type": "click",
+                        "name": "歌手简介",
+                        "key": "V1001_TODAY_SINGER"
+                    },
+                    {
+                        "name": "菜单",
+                        "sub_button": [
+                            {
+                                "type": "view",
+                                "name": "搜索",
+                                "url": "http://www.soso.com/"
+                            },
+                            {
+                                "type": "view",
+                                "name": "视频",
+                                "url": "http://v.qq.com/"
+                            },
+                            {
+                                "type": "click",
+                                "name": "赞一下我们",
+                                "key": "V1001_GOOD"
+                            }
+                        ]
+                    }
+                ]
+            });
+        }
+    </script>
+	</head>
+	<body>
+		<div class="chat-window">
+			<div class="title-bar">
+				<div class="wechat-logo"></div>
+				<span id="account_name"></span>
+			</div>
+			<div class="chat-history" id="chat-history">
+			</div>
+			<div class="input-area" id="input_area_for_text">
+				<div class="switch-btn" id="switch-btn" title="menu"></div>
+				<div class="input-text-area" id="text-area">
+					<input type="text" id="input_text" />
+					<button class="btn btn-success" id="send-btn">
+						发送
+					</button>
+				</div>
+				<div class="input-text-area" id="menu-area" style="display: none">
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
